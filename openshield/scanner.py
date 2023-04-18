@@ -1,7 +1,9 @@
-import os
+import os, gzip
 from pathlib import Path
 from configparser import ConfigParser
 from datetime import datetime, timedelta
+
+import requests
 
 HOME_USER = Path.home()
 OPENSHIELD_DIR = os.path.join(HOME_USER, '.openshield')
@@ -29,3 +31,9 @@ class Scanner:
         config = self._config['DEFAULT']
         last_update = datetime.strptime(config['lastUpdate'], '%Y-%m-%d %H:%M:%S')
         return datetime.now() >= (last_update + timedelta(hours=1))
+
+    def update_database(self) -> None:
+        response = requests.get(MD5_HASH_DOWNLOAD_URL)
+        
+        with open(HASH_DATA_PATH, 'wb') as _zip:
+            _zip.write(response.content)
