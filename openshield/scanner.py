@@ -23,5 +23,5 @@ class Scanner:
 
     def require_hashes_update(self) -> bool:
         config = self._config['DEFAULT']
-        last_update = datetime.strptime(config['lastUpdate'], '%Y-%m-%d, %H:%M:%S')
+        last_update = datetime.strptime(config['lastUpdate'], '%Y-%m-%d %H:%M:%S')
         return datetime.now() >= (last_update + timedelta(hours=1))
