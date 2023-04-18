@@ -4,14 +4,18 @@ from configparser import ConfigParser
 from datetime import datetime, timedelta
 
 HOME_USER = Path.home()
-CONFIG_FILEPATH = os.path.join(HOME_USER, 'openshield.ini')
-HASH_DATA_PATH = os.path.join(HOME_USER, 'hashes.openshield.zip')
+OPENSHIELD_DIR = os.path.join(HOME_USER, '.openshield')
+CONFIG_FILEPATH = os.path.join(OPENSHIELD_DIR, 'openshield.ini')
+HASH_DATA_PATH = os.path.join(OPENSHIELD_DIR, 'hashes.openshield.zip')
 
 MD5_HASH_DOWNLOAD_URL = 'https://bazaar.abuse.ch/export/txt/md5/full/'
 
 
 class Scanner:
     def __init__(self) -> None:
+        if not os.path.isdir(OPENSHIELD_DIR):
+            os.mkdir(OPENSHIELD_DIR)
+
         self._config = ConfigParser()
         self._config.read(CONFIG_FILEPATH)
 
