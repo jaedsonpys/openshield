@@ -35,6 +35,17 @@ class Scanner:
             self._config.write(_config)
 
     def scan_files(self, filepaths: list) -> typing.List[typing.Tuple[str]]:
+        """Scan a file list.
+
+        This method generate a file MD5 hash and checks
+        if this hash is in malware database.
+
+        :param filepaths: File list to check
+        :type filepaths: list
+        :return: List of found malwares
+        :rtype: typing.List[typing.Tuple[str]]
+        """
+
         database = self.load_database()
         malwares = []
 
