@@ -34,7 +34,16 @@ class Scanner:
         with open(CONFIG_FILEPATH, 'w') as _config:
             self._config.write(_config)
 
-    def scan_files(self, filepaths: list) -> typing.List[typing.Tuple[str]]:
+    def load_database(self) -> typing.Generator:
+        with ZipFile(HASH_DATA_PATH) as _zip:
+            hash_txt = _zip.read('full_md5.txt')
+            filelines = hash_txt.split(b'\r\n')
+            _zip.close()
+
+        for _hash in filelines[9:]:
+            yield _hash.decode()
+
+    def scan(self, filepaths: list) -> typing.List[typing.Tuple[str]]:
         """Scan a file list.
 
         This method generate a file MD5 hash and checks
@@ -57,15 +66,6 @@ class Scanner:
                 malwares.append((file, file_hash))
 
         return malwares
-
-    def load_database(self) -> typing.Generator:
-        with ZipFile(HASH_DATA_PATH) as _zip:
-            hash_txt = _zip.read('full_md5.txt')
-            filelines = hash_txt.split(b'\r\n')
-            _zip.close()
-
-        for _hash in filelines[9:]:
-            yield _hash.decode()
 
     def require_hashes_update(self) -> bool:
         """Checks if it is necessary to use the
