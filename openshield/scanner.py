@@ -23,9 +23,11 @@ class Scanner:
 
         if not self._config['DEFAULT']:
             self._config['DEFAULT']['lastUpdate'] = '2000-01-01 00:00:00'
-            
-            with open(CONFIG_FILEPATH, 'w') as _config:
-                self._config.write(_config)
+            self._update_config()
+
+    def _update_config(self) -> None:
+        with open(CONFIG_FILEPATH, 'w') as _config:
+            self._config.write(_config)
 
     def require_hashes_update(self) -> bool:
         config = self._config['DEFAULT']
