@@ -1,7 +1,9 @@
-import os, gzip
-from pathlib import Path
+import os
 from configparser import ConfigParser
 from datetime import datetime, timedelta
+from typing import Generator
+from pathlib import Path
+from zipfile import ZipFile
 
 import requests
 
@@ -28,6 +30,15 @@ class Scanner:
     def _update_config(self) -> None:
         with open(CONFIG_FILEPATH, 'w') as _config:
             self._config.write(_config)
+
+    def load_database(self) -> Generator:
+        with ZipFile(HASH_DATA_PATH) as _zip:
+            hash_txt = _zip.read('full_md5.txt')
+            filelines = hash_txt.split(b'\r\n')
+            _zip.close()
+
+        for _hash in filelines[9:]:
+            yield _hash.decode()
 
     def require_hashes_update(self) -> bool:
         """Checks if it is necessary to use the
