@@ -30,11 +30,26 @@ class Scanner:
             self._config.write(_config)
 
     def require_hashes_update(self) -> bool:
+        """Checks if it is necessary to use the
+        `update_database` method. If the last database
+        update was an hour ago, the function will return `True`.
+
+        :return: If an update is required
+        :rtype: bool
+        """
+
         config = self._config['DEFAULT']
         last_update = datetime.strptime(config['lastUpdate'], '%Y-%m-%d %H:%M:%S')
         return datetime.now() >= (last_update + timedelta(hours=1))
 
     def update_database(self) -> None:
+        """Update hash database.
+
+        The website [MalwareBazaar](https://bazaar.abuse.ch/export)
+        reports that the hashes are updated every **one hour**. Please
+        consider using this method every hour.
+        """
+
         response = requests.get(MD5_HASH_DOWNLOAD_URL)
         
         with open(HASH_DATA_PATH, 'wb') as _zip:
