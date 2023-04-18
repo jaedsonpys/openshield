@@ -1,7 +1,8 @@
 import os
+import typing
+import hashlib
 from configparser import ConfigParser
 from datetime import datetime, timedelta
-from typing import Generator
 from pathlib import Path
 from zipfile import ZipFile
 
@@ -33,7 +34,20 @@ class Scanner:
         with open(CONFIG_FILEPATH, 'w') as _config:
             self._config.write(_config)
 
-    def load_database(self) -> Generator:
+    def scan_files(self, filepaths: list) -> typing.List[typing.Tuple[str]]:
+        database = self.load_database()
+        malwares = []
+
+        for file in filepaths:
+            with open(file, 'rb') as _file:
+                file_hash = hashlib.md5(_file.read()).hexdigest()
+
+            if file_hash in database:
+                malwares.append((file, file_hash))
+
+        return malwares
+
+    def load_database(self) -> typing.Generator:
         with ZipFile(HASH_DATA_PATH) as _zip:
             hash_txt = _zip.read('full_md5.txt')
             filelines = hash_txt.split(b'\r\n')
