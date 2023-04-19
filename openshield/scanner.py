@@ -1,6 +1,7 @@
 import os
 import typing
 import hashlib
+from io import BytesIO
 from configparser import ConfigParser
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -35,13 +36,12 @@ class Scanner:
             self._config.write(_config)
 
     def load_database(self) -> typing.Generator:
-        with ZipFile(HASH_DATA_PATH) as _zip:
-            hash_txt = _zip.read('full_md5.txt')
-            filelines = hash_txt.split(b'\r\n')
-            _zip.close()
+        with open(HASH_DATA_PATH) as _file:
+            hash_txt = _file.read()
+            filelines = hash_txt.split('\r\n')
 
         for _hash in filelines[9:]:
-            yield _hash.decode()
+            yield _hash
 
     def scan(self, files: list) -> typing.List[typing.Tuple[str]]:
         """Scan a file list.
@@ -85,9 +85,13 @@ class Scanner:
         """
 
         response = requests.get(MD5_HASH_DOWNLOAD_URL)
-        
-        with open(HASH_DATA_PATH, 'wb') as _zip:
-            _zip.write(response.content)
+
+        with ZipFile(BytesIO(response.content)) as _zip:
+            hash_txt = _zip.read('full_md5.txt')
+            _zip.close()
+
+        with open(HASH_DATA_PATH, 'wb') as _file:
+            _file.write(hash_txt)
 
         last_update = datetime.now()
         self._config['DEFAULT']['lastUpdate'] = last_update.strftime('%Y-%m-%d %H:%M:%S')
