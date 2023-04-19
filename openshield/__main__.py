@@ -1,4 +1,5 @@
 import os
+import time
 
 from argeasy import ArgEasy
 
@@ -42,14 +43,17 @@ def main():
 
         files = _get_files(args.scan)
         print(f'\033[32m[?]\033[m Scanning {len(files)} files...')
+
+        start_scan_time = time.time()
         malwares = scanner.scan(files)
+        scan_time = time.time() - start_scan_time
 
         if malwares:
-            print(f'\033[31m[!] {len(malwares)} malwares found!\033[33m')
+            print(f'\033[31m[!] {len(malwares)} malwares found! (scan in {scan_time:.3f})\033[33m')
             for malware in malwares:
                 print(f'    File {repr(malware[0])} ({malware[1]})')
 
             print('\033[31m[WARNING] Do not open the files mentioned above. '
                   'Delete all of them as soon as possible.\033[m')
         else:
-            print(f'\033[32m[!]\033[m All right, {len(malwares)} malwares found!')
+            print(f'\033[32m[!]\033[m All right, {len(malwares)} malwares found! (scan in {scan_time:.3f})')
