@@ -1,7 +1,7 @@
 import os
 import typing
-import hashlib
 from io import BytesIO
+from hashlib import md5
 from configparser import ConfigParser
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -57,8 +57,8 @@ class Scanner:
 
         def _hash(file: str):
             with open(file, 'rb') as _file:
-                return hashlib.md5(_file.read()).hexdigest()
-            
+                return md5(_file.read()).hexdigest()
+
         database = self.load_database()
         malwares = [(file, _hash(file)) for file in files if _hash(file) in database]
         return malwares
