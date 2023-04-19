@@ -55,16 +55,12 @@ class Scanner:
         :rtype: typing.List[typing.Tuple[str]]
         """
 
-        database = self.load_database()
-        malwares = []
-
-        for file in files:
+        def _hash(file: str):
             with open(file, 'rb') as _file:
-                file_hash = hashlib.md5(_file.read()).hexdigest()
-
-            if file_hash in database:
-                malwares.append((file, file_hash))
-
+                return hashlib.md5(_file.read()).hexdigest()
+            
+        database = self.load_database()
+        malwares = [(file, _hash(file)) for file in files if _hash(file) in database]
         return malwares
 
     def require_hashes_update(self) -> bool:
