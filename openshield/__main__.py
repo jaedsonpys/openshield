@@ -41,10 +41,9 @@ def main():
         else:
             print('\033[33mAll up-to-date.\033[m')
 
+        start_scan_time = time.time()
         files = _get_files(args.scan)
         print(f'\033[32m[?]\033[m Scanning {len(files)} files...')
-
-        start_scan_time = time.time()
         malwares = scanner.scan(files)
         scan_time = time.time() - start_scan_time
 
