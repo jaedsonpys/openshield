@@ -1,7 +1,23 @@
+import os
+
 from argeasy import ArgEasy
 
 from .__init__ import __version__
 from .scanner import Scanner
+
+
+def _get_files(path_list: str) -> list:
+    file_list = []
+
+    for path in path_list:
+        if os.path.isdir(path):
+            for root, __, files in os.walk(path):
+                for file in files:
+                    file_list.append(os.path.join(root, file))
+        else:
+            file_list.append(path)
+
+    return file_list
 
 
 def main():
@@ -24,8 +40,9 @@ def main():
         else:
             print('\033[33mAll up-to-date.\033[m')
 
-        print(f'\033[32m[?]\033[m Scanning {len(args.scan)} paths...')
-        malwares = scanner.scan(args.scan)
+        files = _get_files(args.scan)
+        print(f'\033[32m[?]\033[m Scanning {len(files)} files...')
+        malwares = scanner.scan(files)
 
         if malwares:
             print(f'\033[31m[!] {len(malwares)} malwares found!\033[33m')
