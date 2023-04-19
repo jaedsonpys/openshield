@@ -95,3 +95,4 @@ class Scanner:
 
         last_update = datetime.now()
         self._config['DEFAULT']['lastUpdate'] = last_update.strftime('%Y-%m-%d %H:%M:%S')
+        self._update_config()
