@@ -94,4 +94,4 @@ class Scanner:
             _zip.write(response.content)
 
         last_update = datetime.now()
-        self._config['DEFAULT']['lastUpdate'] = last_update.replace(microsecond=0)
+        self._config['DEFAULT']['lastUpdate'] = last_update.strftime('%Y-%m-%d %H:%M:%S')
