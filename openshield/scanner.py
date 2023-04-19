@@ -43,14 +43,14 @@ class Scanner:
         for _hash in filelines[9:]:
             yield _hash.decode()
 
-    def scan(self, filepaths: list) -> typing.List[typing.Tuple[str]]:
+    def scan(self, files: list) -> typing.List[typing.Tuple[str]]:
         """Scan a file list.
 
         This method generate a file MD5 hash and checks
         if this hash is in malware database.
 
-        :param filepaths: File list to check
-        :type filepaths: list
+        :param files: File list to check
+        :type files: list
         :return: List of found malwares
         :rtype: typing.List[typing.Tuple[str]]
         """
@@ -58,7 +58,7 @@ class Scanner:
         database = self.load_database()
         malwares = []
 
-        for file in filepaths:
+        for file in files:
             with open(file, 'rb') as _file:
                 file_hash = hashlib.md5(_file.read()).hexdigest()
 
