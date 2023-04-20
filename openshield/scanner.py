@@ -74,7 +74,7 @@ class Scanner:
 
         config = self._config['DEFAULT']
         last_update = datetime.strptime(config['lastUpdate'], '%Y-%m-%d %H:%M:%S')
-        return datetime.now() >= (last_update + timedelta(hours=1))
+        return datetime.now() >= (last_update + timedelta(hours=12))
 
     def update_database(self) -> None:
         """Update hash database.
