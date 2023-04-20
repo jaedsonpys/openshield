@@ -55,9 +55,16 @@ class Scanner:
         :rtype: typing.List[typing.Tuple[str]]
         """
 
-        def _hash(file: str):
-            with open(file, 'rb') as _file:
-                return md5(_file.read()).hexdigest()
+        def _hash(filename: str):
+            _hash = md5()
+            b_array = bytearray(128*1024)
+            mv = memoryview(b_array)
+
+            with open(filename, 'rb', buffering=0) as f:
+                for n in iter(lambda: f.readinto(mv), 0):
+                    _hash.update(mv[:n])
+
+            return _hash.hexdigest()
 
         database = self.load_database()
         malwares = [(file, _hash(file)) for file in files if _hash(file) in database]
