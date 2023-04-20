@@ -6,7 +6,7 @@ from argeasy import ArgEasy
 from .__init__ import __version__
 from .scanner import Scanner
 
-
+# TODO: Criar generator para obter arquivos
 def _get_files(path_list: str) -> list:
     file_list = []
 
@@ -42,10 +42,14 @@ def main():
             print('\033[33mAll up-to-date.\033[m')
 
         start_scan_time = time.time()
+        print(f'\033[32m[?]\033[m Discovering files...', flush=True, end=' ')
         files = _get_files(args.scan)
-        print(f'\033[32m[?]\033[m Scanning {len(files)} files...')
+        print('\033[33mOK\033[m')
+        print(f'\033[32m[?]\033[m Scanning {len(files)} files...', flush=True, end=' ')
         malwares = scanner.scan(files)
         scan_time = time.time() - start_scan_time
+
+        print('\033[33mOK\033[m')
 
         if malwares:
             print(f'\033[31m[!] {len(malwares)} malwares found! (scan in {scan_time:.3f})\033[33m')
