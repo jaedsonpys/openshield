@@ -8,17 +8,13 @@ from .scanner import Scanner
 
 # TODO: Criar generator para obter arquivos
 def _get_files(path_list: str) -> list:
-    file_list = []
-
     for path in path_list:
         if os.path.isdir(path):
             for root, __, files in os.walk(path):
                 for file in files:
-                    file_list.append(os.path.join(root, file))
+                    yield os.path.join(root, file)
         else:
-            file_list.append(path)
-
-    return file_list
+            yield path
 
 
 def main():
@@ -41,11 +37,12 @@ def main():
         else:
             print('\033[33mAll up-to-date.\033[m')
 
-        start_scan_time = time.time()
         print(f'\033[32m[?]\033[m Discovering files...', flush=True, end=' ')
         files = _get_files(args.scan)
         print('\033[33mOK\033[m')
-        print(f'\033[32m[?]\033[m Scanning {len(files)} files...', flush=True, end=' ')
+        print(f'\033[32m[?]\033[m Scanning files...', flush=True, end=' ')
+
+        start_scan_time = time.time()
         malwares = scanner.scan(files)
         scan_time = time.time() - start_scan_time
 
