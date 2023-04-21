@@ -12,7 +12,7 @@ import requests
 HOME_USER = Path.home()
 OPENSHIELD_DIR = os.path.join(HOME_USER, '.openshield')
 CONFIG_FILEPATH = os.path.join(OPENSHIELD_DIR, 'openshield.ini')
-HASH_DATA_PATH = os.path.join(OPENSHIELD_DIR, 'hashes.openshield.zip')
+HASH_DATA_PATH = os.path.join(OPENSHIELD_DIR, 'hashes.openshield')
 
 # This project uses MalwareBazaar (https://bazaar.abuse.ch/)
 # to get malware MD5 hash list.
