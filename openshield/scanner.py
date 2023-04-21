@@ -38,9 +38,9 @@ class Scanner:
     def load_database(self) -> typing.Generator:
         with open(HASH_DATA_PATH) as _file:
             hash_txt = _file.read()
-            filelines = hash_txt.split('\r\n')
+            filelines = hash_txt.split('\n')
 
-        for _hash in filelines[9:]:
+        for _hash in filelines:
             yield _hash
 
     def scan(self, files: list) -> typing.List[typing.Tuple[str]]:
@@ -98,7 +98,8 @@ class Scanner:
             _zip.close()
 
         with open(HASH_DATA_PATH, 'wb') as _file:
-            _file.write(hash_txt)
+            hash_txt = hash_txt.split(b'\r\n')
+            _file.write(b'\n'.join(hash_txt[9:]))
 
         last_update = datetime.now()
         self._config['DEFAULT']['lastUpdate'] = last_update.strftime('%Y-%m-%d %H:%M:%S')
