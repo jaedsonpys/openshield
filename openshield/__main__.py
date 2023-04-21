@@ -6,7 +6,7 @@ from argeasy import ArgEasy
 from .__init__ import __version__
 from .scanner import Scanner
 
-# TODO: Criar generator para obter arquivos
+
 def _get_files(path_list: str) -> list:
     for path in path_list:
         if os.path.isdir(path):
