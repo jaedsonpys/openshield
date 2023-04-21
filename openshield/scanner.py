@@ -36,6 +36,14 @@ class Scanner:
             self._config.write(_config)
 
     def load_database(self) -> typing.Generator:
+        """Load MD5 hash list.
+
+        :return: Generator of hash list
+        :rtype: typing.Generator
+        :yield: MD5 Hash
+        :rtype: Iterator[typing.Generator]
+        """
+
         with open(HASH_DATA_PATH) as _file:
             hash_txt = _file.read()
             filelines = hash_txt.split('\n')
