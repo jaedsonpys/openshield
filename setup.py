@@ -2,6 +2,9 @@ from setuptools import setup
 
 from openshield.__init__ import __version__
 
+with open('README.md') as file:
+    readme = file.read()
+
 setup(
     author='Jaedson Silva',
     author_email='jaedson.dev@proton.me',
@@ -10,6 +13,8 @@ setup(
     version=__version__,
     packages=['openshield'],
     url='https://github.com/jaedsonpys/openshield',
+    long_description=readme,
+    long_description_content_type='text/markdown',
     license='MIT',
     python_requires='>=3.7',
     install_requires=['argeasy==3.0.0', 'requests==2.28.2'],
