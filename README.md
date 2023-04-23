@@ -14,3 +14,19 @@ git clone https://github.com/jaedsonpys/openshield.git
 cd openshield/
 python3 setup.py install
 ```
+
+## How to use
+
+To scan files and/or directories, use the `openshield scan` command and pass as argument the name of the directory or file. Here is an example:
+
+```
+openshield scan ~/Downloads
+```
+
+Now scanning multiple files at once:
+
+```
+openshield scan script.py MyAplication.exe
+```
+
+You will receive a warning message if malware is found, the advice is to delete the file as soon as possible and **do not run or open** it.
