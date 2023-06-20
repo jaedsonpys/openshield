@@ -45,11 +45,8 @@ class Scanner:
         """
 
         with open(HASH_DATA_PATH) as _file:
-            hash_txt = _file.read()
-            filelines = hash_txt.split('\n')
-
-        for _hash in filelines:
-            yield _hash
+            for _hash in _file:
+                yield _hash.rstrip('\n')
 
     def scan(self, files: list) -> typing.List[typing.Tuple[str]]:
         """Scan a file list.
